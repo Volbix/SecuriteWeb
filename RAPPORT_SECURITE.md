@@ -40,7 +40,7 @@
 - Exposition des endpoints à des domaines malveillants
 - Vol de données via requêtes cross-origin
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Configurer CORS avec une whitelist de domaines autorisés
 - Limiter les méthodes HTTP autorisées
 - Configurer les headers autorisés
@@ -63,7 +63,7 @@
 - Surcharge du serveur et de la base de données
 - Compromission de comptes avec mots de passe faibles
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Implémenter `express-rate-limit`
 - Limiter les tentatives de connexion (ex: 5 tentatives par 15 minutes par IP)
 - Ajouter un CAPTCHA après plusieurs échecs
@@ -87,7 +87,7 @@
 - Vol de données utilisateur
 - Défacing du site
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Sanitizer le contenu HTML avec `DOMPurify` ou `sanitize-html` côté serveur
 - Échapper les caractères spéciaux
 - Utiliser Content Security Policy (CSP) côté frontend
@@ -161,7 +161,7 @@ Si les requêtes n'étaient pas paramétrées, un attaquant pourrait :
 2. **Fuites d'informations** : Les erreurs SQL peuvent révéler la structure de la base de données
 3. **Vector d'attaque pour d'autres failles** : Combiné avec d'autres vulnérabilités, peut faciliter l'exploitation
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 -  **Conserver les requêtes paramétrées** : La protection actuelle avec `execute()` et les placeholders doit être maintenue sur toutes les routes
 -  **Valider les entrées** : Ajouter une validation stricte des données d'entrée avant traitement
 -  **Limiter les caractères spéciaux** : Filtrer ou échapper les caractères spéciaux SQL dans les champs de recherche
@@ -283,7 +283,7 @@ Une fois qu'un attaquant malveillant obtient un accès admin, il peut :
 4. **Étape 4** : Une fois connecté en tant qu'admin, suppression de tous les utilisateurs via `DELETE /api/users/:id`
 5. **Étape 5** : Création d'un compte admin de secours via `POST /api/auth/register` puis modification du rôle via `PUT /api/users/:id` pour créer une backdoor permanente
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Ajouter `authorizeAdmin` à la route GET `/api/users` pour restreindre l'accès aux administrateurs uniquement
 - Implémenter le principe du moindre privilège : les utilisateurs normaux ne doivent voir que leurs propres informations
 - Si nécessaire, créer une route séparée pour que les utilisateurs voient leurs propres informations via `GET /api/users/me`
@@ -329,7 +329,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Pas de protection HSTS (si HTTPS est utilisé)
 - Exposition à diverses attaques web
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Utiliser `helmet` middleware pour ajouter les headers de sécurité
 - Configurer Content Security Policy (CSP)
 - Implémenter HSTS en production
@@ -352,7 +352,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Aide aux attaquants pour comprendre la structure
 - Facilite les attaques ciblées
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Retourner des messages d'erreur génériques aux clients
 - Logger les erreurs détaillées uniquement côté serveur
 - Ne pas exposer les stack traces en production
@@ -374,7 +374,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Possibilité de contourner certaines vérifications
 - Erreurs SQL potentielles
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Valider que l'ID est un nombre entier positif
 - Utiliser une bibliothèque de validation
 - Retourner des erreurs 400 (Bad Request) pour IDs invalides
@@ -395,7 +395,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Corruption de l'intégrité des données
 - Falsification de l'attribution de contenu
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Ne pas permettre la modification de l'`author_id` sauf pour les admins
 - Utiliser l'`author_id` original de l'article si l'utilisateur n'est pas admin
 - Ignorer ce champ dans le body pour les utilisateurs non-admin
@@ -416,7 +416,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Tokens JWT interceptables
 - Mots de passe interceptables (si transmis)
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Forcer HTTPS en production
 - Utiliser des certificats SSL/TLS valides
 - Rediriger automatiquement HTTP vers HTTPS
@@ -438,7 +438,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Pas de mécanisme de révocation
 - Risque de réutilisation de tokens volés
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Implémenter un système de refresh tokens
 - Réduire la durée de vie des access tokens (15-30 minutes)
 - Utiliser des refresh tokens avec rotation
@@ -446,7 +446,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 
 ---
 
-## 🔍 PARTIE 2 : FAILLES DÉCOUVERTES EN MODE WHITE BOX
+## PARTIE 2 : FAILLES DÉCOUVERTES EN MODE WHITE BOX
 
 *Ces failles ont été découvertes via l'analyse du code source.*
 
@@ -478,7 +478,7 @@ router.get('/', authenticate, authorizeAdmin, async (req, res) => {
 - Risque d'usurpation d'identité massive
 - Impossible de récupérer les mots de passe en cas de fuite
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Utiliser `bcrypt` ou `argon2` pour hasher les mots de passe
 - Ne jamais stocker les mots de passe en clair
 - Utiliser `bcrypt.compare()` pour la vérification
@@ -526,7 +526,7 @@ router.post('/register', async (req, res) => {
 - Comportement imprévisible de l'application
 - Risque d'erreurs SQL même avec requêtes paramétrées
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Utiliser une bibliothèque de validation comme `joi` ou `express-validator`
 - Valider tous les champs avant traitement
 - Définir des règles de validation strictes (format email, longueur min/max, caractères autorisés)
@@ -564,7 +564,7 @@ router.post('/register', async (req, res) => {
 - Aide aux attaquants pour comprendre l'architecture
 - Violation de la confidentialité des données
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Supprimer tous les `console.log()` de production
 - Utiliser un système de logging approprié (winston, pino)
 - Ne jamais logger les requêtes SQL avec des données sensibles
@@ -601,7 +601,7 @@ const generateToken = (user) => {
 - Compromission de l'authentification
 - Tous les tokens peuvent être invalidés si la clé change
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Vérifier que `JWT_SECRET` est défini au démarrage de l'application
 - Utiliser une clé secrète forte (minimum 32 caractères aléatoires)
 - Générer une erreur fatale si la variable est absente
@@ -653,7 +653,7 @@ router.put('/:id', authenticate, async (req, res) => {
 - Un admin pourrait se rétrograder accidentellement
 - Pas de validation que le rôle fait partie des valeurs ENUM de la base de données
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Valider que le rôle fait partie des valeurs autorisées (ENUM: 'user', 'admin')
 - Empêcher un admin de modifier son propre rôle
 - Ajouter une validation stricte des valeurs de rôle
@@ -690,7 +690,7 @@ const createDbConnection = () => {
 - Pas de chiffrement des données en transit
 - Risque de déni de service si la connexion est perdue
 
-**État** : ✅ Corrigé
+**État** : Corrigé
 - Utiliser un pool de connexions (`mysql.createPool()`)
 - Configurer SSL pour la connexion MySQL
 - Implémenter une gestion robuste des erreurs de connexion
@@ -698,7 +698,7 @@ const createDbConnection = () => {
 
 ---
 
-## 📊 Résumé des Failles par Méthode
+## Résumé des Failles par Méthode
 
 ### Black Box Testing
 | Sévérité | Nombre | Failles |
@@ -721,35 +721,35 @@ const createDbConnection = () => {
 
 ---
 
-## ✅ Corrections Effectuées
+## Corrections Effectuées
 
-### Priorité 1 (Immédiat - Critique) - ✅ TOUTES CORRIGÉES
-1.  ✅ **Implémenter le hachage des mots de passe** (bcrypt) - White Box - **FAIT**
-2.  ✅ **Ajouter la validation des entrées** (joi/express-validator) - White Box - **FAIT**
-3.  ✅ **Supprimer les console.log() de production** - White Box - **FAIT**
-4.  ✅ **Configurer CORS correctement** - Black Box - **FAIT**
-5.  ✅ **Implémenter la protection CSRF** - Black Box - **FAIT**
-6.  ✅ **Ajouter le rate limiting** - Black Box - **FAIT**
-7.  ✅ **Restreindre l'accès à `/api/users` aux administrateurs uniquement** - Black Box - **FAIT**
+### Priorité 1 (Immédiat - Critique) - TOUTES CORRIGÉES
+1.  **Implémenter le hachage des mots de passe** (bcrypt) - White Box - **FAIT**
+2.  **Ajouter la validation des entrées** (joi/express-validator) - White Box - **FAIT**
+3.  **Supprimer les console.log() de production** - White Box - **FAIT**
+4.  **Configurer CORS correctement** - Black Box - **FAIT**
+5.  **Implémenter la protection CSRF** - Black Box - **FAIT**
+6.  **Ajouter le rate limiting** - Black Box - **FAIT**
+7.  **Restreindre l'accès à `/api/users` aux administrateurs uniquement** - Black Box - **FAIT**
 
-### Priorité 2 (Court terme - Haute) - ✅ TOUTES CORRIGÉES
-8.  ✅ **Sanitizer le contenu HTML** - Black Box - **FAIT**
-9.  ✅ **Renforcer la protection contre l'injection SQL** (validation supplémentaire, gestion d'erreurs) - Black Box - **FAIT**
-10.  ✅ **Valider les IDs et paramètres** - Black Box - **FAIT**
-11.  ✅ **Améliorer la gestion d'erreurs** - Black Box - **FAIT**
-12.  ✅ **Vérifier JWT_SECRET au démarrage** - White Box - **FAIT**
-13.  ✅ **Ajouter les headers de sécurité** (helmet) - Black Box - **FAIT**
+### Priorité 2 (Court terme - Haute) - TOUTES CORRIGÉES
+8.  **Sanitizer le contenu HTML** - Black Box - **FAIT**
+9.  **Renforcer la protection contre l'injection SQL** (validation supplémentaire, gestion d'erreurs) - Black Box - **FAIT**
+10.  **Valider les IDs et paramètres** - Black Box - **FAIT**
+11.  **Améliorer la gestion d'erreurs** - Black Box - **FAIT**
+12.  **Vérifier JWT_SECRET au démarrage** - White Box - **FAIT**
+13.  **Ajouter les headers de sécurité** (helmet) - Black Box - **FAIT**
 
-### Priorité 3 (Moyen terme - Moyenne/Faible) - ✅ TOUTES CORRIGÉES
-14.  ✅ **Corriger la modification d'author_id** - Black Box - **FAIT**
-15.  ✅ **Améliorer la validation du rôle** - White Box - **FAIT**
-16.  ✅ **Implémenter les refresh tokens** - Black Box - **FAIT**
-17.  ✅ **Forcer HTTPS en production** - Black Box - **FAIT**
-18.  ✅ **Améliorer la connexion DB** - White Box - **FAIT**
+### Priorité 3 (Moyen terme - Moyenne/Faible) - TOUTES CORRIGÉES
+14.  **Corriger la modification d'author_id** - Black Box - **FAIT**
+15.  **Améliorer la validation du rôle** - White Box - **FAIT**
+16.  **Implémenter les refresh tokens** - Black Box - **FAIT**
+17.  **Forcer HTTPS en production** - Black Box - **FAIT**
+18.  **Améliorer la connexion DB** - White Box - **FAIT**
 
 ---
 
-## 📝 Notes Finales
+## Notes Finales
 
 ### Comparaison Black Box vs White Box
 
@@ -765,12 +765,12 @@ const createDbConnection = () => {
 
 ### État des Corrections
 
-**✅ Toutes les failles identifiées ont été corrigées.**
+**Toutes les failles identifiées ont été corrigées.**
 
 Les failles critiques suivantes ont été traitées :
-1. ✅ L'authentification (mots de passe en clair) - découverte en White Box - **CORRIGÉ**
-2. ✅ La validation des entrées - découverte en White Box - **CORRIGÉ**
-3. ✅ Les protections externes (CORS, CSRF, rate limiting) - découvertes en Black Box - **CORRIGÉ**
+1. L'authentification (mots de passe en clair) - découverte en White Box - **CORRIGÉ**
+2. La validation des entrées - découverte en White Box - **CORRIGÉ**
+3. Les protections externes (CORS, CSRF, rate limiting) - découvertes en Black Box - **CORRIGÉ**
 
 **Recommandations pour maintenir la sécurité à long terme** :
 - Effectuer des audits réguliers en mode Black Box et White Box
@@ -780,5 +780,3 @@ Les failles critiques suivantes ont été traitées :
 - Effectuer des tests de pénétration réguliers
 
 ---
-
-**Fin du rapport**
